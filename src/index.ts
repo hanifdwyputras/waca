@@ -3,8 +3,9 @@ import 'dotenv/config';
 import {Client, RemoteAuth} from 'whatsapp-web.js';
 import * as qrterm from 'qrcode-terminal';
 
-import {$mongo} from './database.js';
+import {$mongo} from '@database';
 import {MongoAuthStore} from '@utilities/mongo-auth-store';
+import {WaMessageContext} from '@impls/message-context';
 
 const store = new MongoAuthStore($mongo);
 const client = new Client({
@@ -35,7 +36,9 @@ client.on('authenticated', async session => {
 });
 
 client.on('message', m => {
-	console.log(m);
+	const ctx = new WaMessageContext(m, ['.', '/']);
+
+	console.log(ctx.commandName, ctx.args);
 });
 
 client.on('ready', async () => {

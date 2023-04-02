@@ -12,7 +12,10 @@
         "strictFunctionTypes": true,
         "strictPropertyInitialization": true,
         "paths": {
-            "@utilities/*": ["src/utilities/*"]
+            "@utilities/*": ["src/utilities/*"],
+            "@impls/*": ["src/implements/*"],
+            "@database": ["src/database.ts"],
+            "@typings/*": ["src/@typings/*"]
         },
         "baseUrl": "."
     },

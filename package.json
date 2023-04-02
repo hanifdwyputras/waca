@@ -24,6 +24,7 @@
     "typescript": "^5.0.3"
   },
   "dependencies": {
+    "@discordjs/collection": "^1.5.0",
     "@sapphire/lexure": "^1.1.2",
     "dotenv": "^16.0.3",
     "mongoose": "^7.0.3",

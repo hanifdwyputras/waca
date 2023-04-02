@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@discordjs/collection': ^1.5.0
   '@sapphire/lexure': ^1.1.2
   '@types/qrcode-terminal': ^0.12.0
   '@typescript-eslint/eslint-plugin': '>=5.43.0'
@@ -16,6 +17,7 @@ specifiers:
   whatsapp-web.js: github:pedroslopez/whatsapp-web.js
 
 dependencies:
+  '@discordjs/collection': 1.5.0
   '@sapphire/lexure': 1.1.2
   dotenv: 16.0.3
   mongoose: 7.0.3
@@ -33,6 +35,11 @@ devDependencies:
   typescript: 5.0.3
 
 packages:
+
+  /@discordjs/collection/1.5.0:
+    resolution: {integrity: sha512-suyVndkEAAWrGxyw/CPGdtXoRRU6AUNkibtnbJevQzpelkJh3Q1gQqWDpqf5i39CnAn5+LrN0YS+cULeEjq2Yw==}
+    engines: {node: '>=16.9.0'}
+    dev: false
 
   /@esbuild/android-arm/0.17.15:
     resolution: {integrity: sha512-sRSOVlLawAktpMvDyJIkdLI/c/kdRTOqo8t6ImVxg8yT7LQDUYV5Rp2FKeEosLr6ZCja9UjYAzyRSxGteSJPYg==}
