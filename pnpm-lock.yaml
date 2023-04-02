@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@sapphire/lexure': ^1.1.2
   '@types/qrcode-terminal': ^0.12.0
   '@typescript-eslint/eslint-plugin': '>=5.43.0'
   '@typescript-eslint/parser': '>=5.43.0'
@@ -15,6 +16,7 @@ specifiers:
   whatsapp-web.js: github:pedroslopez/whatsapp-web.js
 
 dependencies:
+  '@sapphire/lexure': 1.1.2
   dotenv: 16.0.3
   mongoose: 7.0.3
   qrcode-terminal: 0.12.0
@@ -310,6 +312,18 @@ packages:
 
   /@pedroslopez/moduleraid/5.0.2:
     resolution: {integrity: sha512-wtnBAETBVYZ9GvcbgdswRVSLkFkYAGv1KzwBBTeRXvGT9sb9cPllOgFFWXCn9PyARQ0H+Ijz6mmoRrGateUDxQ==}
+    dev: false
+
+  /@sapphire/lexure/1.1.2:
+    resolution: {integrity: sha512-+v3P3EMDdFoybHH7c7cMcz30jEyxujkxWu5f958cf/Sm27fMM0IqwILnNFUpExZCBAueEM/eoSgbRl4q+K+0jg==}
+    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+    dependencies:
+      '@sapphire/result': 2.6.0
+    dev: false
+
+  /@sapphire/result/2.6.0:
+    resolution: {integrity: sha512-gdW6n/oDZ8aC1439Ub3RiLQ6L4VHAxbN0AhGJWNkEZ6Z6Ww2V62fwRiA/73OPfgYQKXk9ljhAFiqNO91KAonHQ==}
+    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: false
 
   /@types/json-schema/7.0.11:

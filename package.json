@@ -24,6 +24,7 @@
     "typescript": "^5.0.3"
   },
   "dependencies": {
+    "@sapphire/lexure": "^1.1.2",
     "dotenv": "^16.0.3",
     "mongoose": "^7.0.3",
     "qrcode-terminal": "^0.12.0",
