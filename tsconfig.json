@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "outDir": "./dist",
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "strictNullChecks": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
+        "paths": {
+            "@utilities/*": ["src/utilities/*"]
+        },
+        "baseUrl": "."
+    },
+    "exclude": ["node_modules", "dist"],
+    "include": ["src/**/*"]
+}
