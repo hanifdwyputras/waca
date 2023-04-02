@@ -19,17 +19,17 @@ export class MongoAuthStore implements AuthStore {
 
 	async sessionExists(options: {session: string}): Promise<boolean> {
 		const collection = this.$mongo.collection(
-			'whatsapp-'.concat(this.getBucketName(options.session), '.files'),
+			this.getBucketName(options.session).concat('.files'),
 		);
-		const documentCounts = await collection.countDocuments({});
-		return documentCounts > 0;
+		const documents = await collection.estimatedDocumentCount({});
+		return documents > 0;
 	}
 
 	async extract(options: {session: string; path: string}): Promise<void> {
 		await this.initBucketIfNeccesary(options.session);
 		const stream = this.$bucket.openDownloadStreamByName(
 			this.cleanupSessionString(options.session).concat('.zip'),
-		).pipe(createWriteStream(this.cleanupSessionString(options.session).concat('.zip')));
+		).pipe(createWriteStream(options.path));
 
 		await waitUntilStreamResolved(stream);
 	}
@@ -38,7 +38,7 @@ export class MongoAuthStore implements AuthStore {
 		await this.initBucketIfNeccesary(options.session);
 		await waitUntilStreamResolved(
 			createReadStream(this.cleanupSessionString(options.session).concat('.zip'))
-				.pipe(this.$bucket.openUploadStream(this.cleanupSessionString(options.session).concat('.zip'))),
+				.pipe(this.$bucket.openUploadStream(this.getBucketName(options.session).concat('.zip'))),
 		);
 
 		await this.deletePrevious(options.session);

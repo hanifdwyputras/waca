@@ -6,13 +6,15 @@ import * as qrterm from 'qrcode-terminal';
 import {$mongo} from './database.js';
 import {MongoAuthStore} from '@utilities/mongo-auth-store';
 
+const store = new MongoAuthStore($mongo);
 const client = new Client({
 	puppeteer: {
 		args: ['--no-sandbox'],
 	},
 	authStrategy: new RemoteAuth({
-		store: new MongoAuthStore($mongo),
+		store,
 		backupSyncIntervalMs: 300000,
+		clientId: 'waca',
 	}),
 });
 
@@ -24,8 +26,22 @@ client.on('remote_session_saved', () => {
 	console.log('[I] WWeb.js session saved');
 });
 
+client.on('auth_failure', message => {
+	console.error('[E] Auth fail:', message);
+});
+
+client.on('authenticated', async session => {
+	console.log('[I] Authenticated as:', session);
+});
+
+client.on('message', m => {
+	console.log(m);
+});
+
 client.on('ready', async () => {
 	console.log('WACA is ready to-go!');
 });
 
-void client.initialize();
+(async () => {
+	await client.initialize();
+})();
