@@ -5,6 +5,7 @@ import {
 } from '@typings/args';
 import {ArgumentContext} from './argument-context';
 import {type WaMessageContext} from './message-context';
+import {waCooldown} from '@utilities/commands';
 
 export class BaseCommand {
 	public name!: string;
@@ -39,8 +40,26 @@ export class BaseCommand {
 
 	async init(context: WaMessageContext): Promise<void> {
 		if (typeof this.run === 'function') {
+			const chat = await context.msg.getChat();
+			const payload = Buffer.from(`${chat.id._serialized}__${context.senderJid}`)
+				.toString('hex');
+
+			if (waCooldown.has(payload)) {
+				const d = waCooldown.get(payload)!;
+				if (d.t <= Date.now()) {
+					waCooldown.delete(payload);
+				} else if (d.t > Date.now() && !d.w) {
+					await context.sendReply('Please wait for ' + new Date(d.t - Date.now()).getSeconds().toString() + ' seconds');
+					waCooldown.set(payload, {
+						...d,
+						w: true,
+					});
+					return;
+				}
+			}
+
 			this.argsInstance = new ArgumentContext(context, this.args);
-			this.run(context).catch(async (err: Error) => {
+			await this.run(context).catch(async (err: Error) => {
 				if (
 					typeof err === 'object'
 					&& Reflect.has(err, 'message')
@@ -48,6 +67,11 @@ export class BaseCommand {
 				) {
 					await context.sendReply(`An error occured:\n${err.name}: ${err.message}`);
 				}
+			}).then(() => {
+				waCooldown.set(payload, {
+					t: Date.now() + this.cooldown,
+					w: false,
+				});
 			});
 		}
 	}
