@@ -1,10 +1,13 @@
 import {Lexer, Parser, PrefixedStrategy} from '@sapphire/lexure';
 import type * as WAWebJS from 'whatsapp-web.js';
+import {type BaseCommand} from './command';
+import {waCommands} from '@utilities/commands';
 
 /**
  * @class WAMessageContext
  */
 export class WaMessageContext {
+	public client!: WAWebJS.Client;
 	protected lexer = new Lexer({
 		quotes: [
 			['"', '"'],
@@ -18,13 +21,12 @@ export class WaMessageContext {
 	/**
      * @constructor
      * @param {WAWebJS.Message} msg WWeb.js message
-	 * @param {WAWebJS.Client} client WWeb.js Client
      * @param {string[]} prefixMatches Prefix matches for message
      */
-	constructor(protected readonly msg: WAWebJS.Message, protected readonly client: WAWebJS.Client, private readonly prefixMatches: string[]) {}
+	constructor(public readonly msg: WAWebJS.Message, private readonly prefixMatches: string[]) {}
 
 	get id(): string {
-		return this.msg.id.id;
+		return this.msg.id._serialized;
 	}
 
 	get fromMe(): boolean {
@@ -77,12 +79,19 @@ export class WaMessageContext {
 			.map(order => order.value).slice(1);
 	}
 
-	async sendReply(c: WAWebJS.MessageContent): Promise<WaMessageContext> {
+	async sendReply(c: WAWebJS.MessageContent, o?: WAWebJS.MessageSendOptions): Promise<WaMessageContext> {
 		const m = await this.client.sendMessage(this.jid, c, {
+			...o,
 			quotedMessageId: this.id,
 		});
 
-		return new WaMessageContext(m, this.client, this.prefixMatches);
+		return new WaMessageContext(m, this.prefixMatches);
+	}
+
+	getCommand<C extends BaseCommand>(): C | undefined {
+		return waCommands
+			.find(c => c.name === this.commandName?.toLowerCase() || c.aliases
+				.includes(this.commandName!)) as C;
 	}
 
 	getOption(option: string): string[] {

@@ -40,7 +40,7 @@ export class BaseCommand {
 	async init(context: WaMessageContext): Promise<void> {
 		if (typeof this.run === 'function') {
 			this.argsInstance = new ArgumentContext(context, this.args);
-			await this.run(context).catch(async (err: Error) => {
+			this.run(context).catch(async (err: Error) => {
 				if (
 					typeof err === 'object'
 					&& Reflect.has(err, 'message')

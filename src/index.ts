@@ -7,6 +7,8 @@ import {$mongo} from '@database';
 import {MongoAuthStore} from '@utilities/mongo-auth-store';
 import {WaMessageContext} from '@impls/message-context';
 
+import './commands/index';
+
 const store = new MongoAuthStore($mongo);
 const client = new Client({
 	puppeteer: {
@@ -35,10 +37,17 @@ client.on('authenticated', async session => {
 	console.log('[I] Authenticated as:', session);
 });
 
-client.on('message', m => {
-	const ctx = new WaMessageContext(m, client, ['.', '/']);
+client.on('message', async m => {
+	const ctx = new WaMessageContext(m, ['.', '/']);
 
-	console.log(ctx.commandName, ctx.args);
+	if (ctx.isCommand && !ctx.isBroadcast) {
+		Reflect.set(ctx, 'client', client);
+
+		const command = ctx.getCommand();
+		if (command) {
+			await command.init(ctx);
+		}
+	}
 });
 
 client.on('ready', async () => {
