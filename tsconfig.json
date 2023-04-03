@@ -15,7 +15,8 @@
             "@utilities/*": ["src/utilities/*"],
             "@impls/*": ["src/implements/*"],
             "@database": ["src/database.ts"],
-            "@typings/*": ["src/@typings/*"]
+            "@typings/*": ["src/@typings/*"],
+            "@models/*": ["src/models/*"]
         },
         "baseUrl": "."
     },
