@@ -15,7 +15,7 @@ class MyInfoCommand extends BaseCommand {
             - Name: ${user.pushname}
             - Business account: ${user.isBusiness ? 'yes' : 'nope'}
         `;
-		await context.sendReply(stripIndent(message));
+		await context.sendReply((stripIndent as (t: string) => string)(message));
 	}
 }
 

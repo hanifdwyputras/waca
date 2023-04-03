@@ -18,7 +18,8 @@
             "@typings/*": ["src/@typings/*"],
             "@models/*": ["src/models/*"]
         },
-        "baseUrl": "."
+        "baseUrl": ".",
+        "allowSyntheticDefaultImports": true
     },
     "exclude": ["node_modules", "dist"],
     "include": ["src/**/*"]
