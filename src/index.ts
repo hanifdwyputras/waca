@@ -36,7 +36,7 @@ client.on('authenticated', async session => {
 });
 
 client.on('message', m => {
-	const ctx = new WaMessageContext(m, ['.', '/']);
+	const ctx = new WaMessageContext(m, client, ['.', '/']);
 
 	console.log(ctx.commandName, ctx.args);
 });
