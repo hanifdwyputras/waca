@@ -5,15 +5,14 @@ import {registerCommand} from '@utilities/commands';
 
 class MyInfoCommand extends BaseCommand {
 	async run(context: WaMessageContext): Promise<void> {
-		const user = await context.msg.getContact();
-		const number = await user.getFormattedNumber();
+		const number = await context.contact.getFormattedNumber();
 
 		const message = `
-            👀 ${user.verifiedName ?? user.pushname}'s information
-            - ID: ${user.id._serialized}
+            👀 ${context.contact.verifiedName ?? context.contact.pushname}'s information
+            - ID: ${context.contact.id._serialized}
             - Number: ${number}
-            - Name: ${user.pushname}
-            - Business account: ${user.isBusiness ? 'yes' : 'nope'}
+            - Name: ${context.contact.pushname}
+            - Business account: ${context.contact.isBusiness ? 'yes' : 'nope'}
         `;
 		await context.sendReply((stripIndent as (t: string) => string)(message));
 	}

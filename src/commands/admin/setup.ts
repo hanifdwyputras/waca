@@ -7,18 +7,17 @@ import type WAWebJS from 'whatsapp-web.js';
 
 class SetupGroupCommand extends BaseCommand {
 	async run(context: WaMessageContext): Promise<void> {
-		const chat = await context.msg.getChat();
-		const g = await groupModel.findById(chat.id._serialized);
+		const g = await groupModel.findById(context.chat.id._serialized);
 
 		if (g) {
 			await context.sendReply('This group is already initialized.');
 		} else {
 			await context.sendReply('Initializing ...');
 			const g2 = await groupModel.create({
-				_id: chat.id._serialized,
-				name: chat.name,
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-				owner: (chat as WAWebJS.GroupChat).owner._serialized,
+				_id: context.chat.id._serialized,
+				name: context.chat.name,
+
+				owner: (context.chat as WAWebJS.GroupChat).owner._serialized,
 			});
 			await context.sendReply((stripIndent as (t: string) => string)(`
 				This group properties has saved to database:

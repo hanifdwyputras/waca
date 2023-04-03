@@ -55,7 +55,6 @@ export class BaseCommand {
 				}
 
 				if (chat.isGroup) {
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 					const p = (chat as WAWebJS.GroupChat).participants.find(
 						(pc: WAWebJS.GroupParticipant) => pc.id._serialized === user.id._serialized,
 					);
