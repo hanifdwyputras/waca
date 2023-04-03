@@ -1,6 +1,7 @@
-import {Schema, model} from 'mongoose';
+import {$mongo} from '@database';
+import {Schema} from 'mongoose';
 
-export const rulesModel = model('Rules', new Schema({
+export const rulesModel = $mongo.model('Rules', new Schema({
 	_id: Schema.Types.ObjectId,
 	type: {
 		type: Schema.Types.String,

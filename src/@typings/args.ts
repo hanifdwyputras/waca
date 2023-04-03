@@ -15,4 +15,5 @@ export type CommandOptions = {
 	args: Array<Argument<ArgumentType>>;
 	cooldown?: number;
 	aliases: string[];
+	onlyAdmin?: boolean;
 };

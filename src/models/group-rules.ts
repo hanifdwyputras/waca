@@ -1,6 +1,7 @@
-import {Schema, model} from 'mongoose';
+import {$mongo} from '@database';
+import {Schema} from 'mongoose';
 
-export const groupRulesModel = model('GroupRules', new Schema({
+export const groupRulesModel = $mongo.model('GroupRules', new Schema({
 	group: {
 		type: Schema.Types.ObjectId,
 		ref: 'Group',

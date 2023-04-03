@@ -6,6 +6,7 @@ import {
 import {ArgumentContext} from './argument-context';
 import {type WaMessageContext} from './message-context';
 import {waCooldown} from '@utilities/commands';
+import type WAWebJS from 'whatsapp-web.js';
 
 export class BaseCommand {
 	public name!: string;
@@ -13,6 +14,7 @@ export class BaseCommand {
 	public args: Array<Argument<ArgumentType>> = [];
 	public cooldown!: number;
 	public aliases: string[] = [];
+	public onlyAdmin = false;
 	public argsInstance!: ArgumentContext;
 
 	/**
@@ -32,6 +34,7 @@ export class BaseCommand {
 				? options.cooldown
 				: 5_000;
 		this.aliases = Array.isArray(options.aliases) ? options.aliases : [];
+		this.onlyAdmin = options.onlyAdmin ?? false;
 	}
 
 	async run(context: WaMessageContext): Promise<void> {
@@ -41,7 +44,30 @@ export class BaseCommand {
 	async init(context: WaMessageContext): Promise<void> {
 		if (typeof this.run === 'function') {
 			const chat = await context.msg.getChat();
-			const payload = Buffer.from(`${chat.id._serialized}__${context.senderJid}`)
+			const user = await context.msg.getContact();
+
+			if (this.onlyAdmin) {
+				if (!chat.isGroup) {
+					return;
+				}
+
+				if (chat.isGroup) {
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+					const p = (chat as WAWebJS.GroupChat).participants.find(
+						(pc: WAWebJS.GroupParticipant) => pc.id._serialized === user.id._serialized,
+					);
+
+					if (!p) {
+						return;
+					}
+
+					if (p && (!p.isAdmin || !p.isSuperAdmin)) {
+						return;
+					}
+				}
+			}
+
+			const payload = Buffer.from(`${chat.id._serialized}__${user.id._serialized}`)
 				.toString('hex');
 
 			if (waCooldown.has(payload)) {
