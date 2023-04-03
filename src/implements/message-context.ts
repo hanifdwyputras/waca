@@ -8,6 +8,9 @@ import {waCommands} from '@utilities/commands';
  */
 export class WaMessageContext {
 	public client!: WAWebJS.Client;
+	public chat!: WAWebJS.Chat;
+	public contact!: WAWebJS.Contact;
+
 	protected lexer = new Lexer({
 		quotes: [
 			['"', '"'],

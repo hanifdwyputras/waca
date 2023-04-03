@@ -46,6 +46,9 @@ export class BaseCommand {
 			const chat = await context.msg.getChat();
 			const user = await context.msg.getContact();
 
+			Reflect.set(context, 'chat', chat);
+			Reflect.set(context, 'contact', user);
+
 			if (this.onlyAdmin) {
 				if (!chat.isGroup) {
 					return;
